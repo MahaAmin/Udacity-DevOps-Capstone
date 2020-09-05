@@ -1,26 +1,27 @@
 # Udacity Capstone Project 
 
 
-## Table of Content
+## Project Steps
 
-1. [Development](#development)
-2. [Docker Containerization](#docker-containerization)
+- **Development:**
 
+    Simple flask application.
 
-<hr>
+<br>
 
-## Development
+- **Docker Containerization:**
 
-Simple flask application.
+    Run docker flask-app container:
 
-<hr>
+    ```
+        $./run_docker.sh
+    ```
 
-## Docker Containerization
+<br>
 
-Run docker flask-app container:
+- **Push docker image to docker-hub:**
 
-```
-    $./dockerBuild.sh
-```
+    ```
+        $./upload_docker.sh
+    ```
 
-<hr>
