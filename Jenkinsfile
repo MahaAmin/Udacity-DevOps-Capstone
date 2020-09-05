@@ -7,15 +7,9 @@ pipeline {
             }
         }
 
-        stage('Activate VENV'){
+        stage('Lint Code'){
             steps {
                 sh "bash ./run_pylint.sh"
-            }
-        }
-
-        stage('Lint Code'){
-            steps{
-                sh "pylint app.py"
             }
         }
 
