@@ -3,13 +3,13 @@ pipeline {
     stages {
         stage('Install Requirements'){
             steps{
-                sh "bash ./run_pylint.sh"
+                sh "pip3 install -r requirements.txt"
             }
         }
 
         stage('Lint Code'){
             steps {
-                sh "pylint app.py"
+                sh "bash ./run_pylint.sh"
             }
         }
 
