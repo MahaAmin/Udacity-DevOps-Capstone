@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Install Requirements'){
             steps{
-                sh "pip3 install -r requirements.txt"
+                sh "bash ./run_pylint.sh"
             }
         }
 
