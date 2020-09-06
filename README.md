@@ -9,7 +9,7 @@
 
 <br>
 
-- **Docker Containerization:**
+- **Docker Containerization (Local manual check):**
 
     Run docker flask-app container:
 
@@ -19,7 +19,7 @@
 
 <br>
 
-- **Push docker image to docker-hub:**
+- **Push docker image to docker-hub (Local manual check):**
 
     ```
         $./upload_docker.sh
@@ -42,8 +42,22 @@
         ```
         $ sudo apt-get install python3-venv
         ```
-    - Install Docker.
 
     ![1-jenkins-blueocean](screenshots/1-jenkins-blueocean.png)
 
+
+- **Docker With Jenkins:**
+
+    - Install docker on jenkins server.
+
+    - Add jenkins to docker group:
+        ```
+            $ sudo usermod -aG docker jenkins
+        ```
+
+    - Install "Docker" jenkin's plug-in.
+
+    - Add Docker-Hub credentials to jenkins.
+
+    - Use docker plug-in to build, upload, and delete docker images.
 

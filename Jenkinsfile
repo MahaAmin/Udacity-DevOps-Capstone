@@ -1,4 +1,9 @@
 pipeline {
+    environment{
+        registry = "mahaamin97/flask-app"
+        registryCredential = 'docker-hub' 
+        dockerImage = '' 
+    }
     agent any 
     stages {
         stage('Install Requirements'){
@@ -15,14 +20,25 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t flask-app .'
-                sh 'docker images'
+                script{
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
 
         stage('Upload image to docker-hub'){
             steps{
-                echo 'uploading image to docker-hub.'
+                script{
+                    docker.withRegistry('', registryCredential){
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Clean Up Images'){
+            steps { 
+                sh "docker rmi $registry:$BUILD_NUMBER" 
             }
         }
 
