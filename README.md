@@ -30,18 +30,20 @@
 
     - Install java:
     ```
-    $ sudo apt update && sudo apt install  default-jdk;
+    $ sudo apt update && sudo apt install default-jdk;
     ```
 
     - Install Jenkins.
 
     - Install pip3 and venv:
-    ```
-    $ sudo apt install python3-pip
-    ```
-    ```
-    $ sudo apt-get install python3-venv
-    ```
+        ```
+        $ sudo apt install python3-pip
+        ```
+        ```
+        $ sudo apt-get install python3-venv
+        ```
+    - Install Docker.
 
     ![1-jenkins-blueocean](screenshots/1-jenkins-blueocean.png)
+
 
