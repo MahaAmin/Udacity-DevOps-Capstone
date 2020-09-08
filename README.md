@@ -61,3 +61,17 @@
 
     - Use docker plug-in to build, upload, and delete docker images.
 
+
+- **Kubernetes Cluster on AWS using EKS:**
+
+    - Follow this [guide](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
+
+    - Install AWS CLI.
+    - Install eksctl.
+    - Install kubectl.
+    - Create Amazon EKS cluster:
+        ```
+            $ ./eks-create-cluster.sh udacity-cluster
+        ```
+    
+    
