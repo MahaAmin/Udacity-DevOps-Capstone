@@ -43,10 +43,10 @@ pipeline {
             }
         }
 
-        stage('Green Deployment'){
+        stage('Set K8S Context'){
             steps {
                 withAWS(credentials:'eks-admin'){
-                    sh "whoami && aws configure list && kubectl get all"
+                    sh "kubectl config set-context arn:aws:eks:us-east-2:319947095944:cluster/production"
                 }
             }
         }
