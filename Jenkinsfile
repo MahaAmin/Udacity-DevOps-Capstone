@@ -51,6 +51,12 @@ pipeline {
             }
         }
 
+        stage('Test kubectl"){
+            steps {
+                sh "kubectl get all"
+            }
+        }
+
         stage('Unit Tests on Green Deployment'){
             steps{
                 echo "deploying blue-green."
