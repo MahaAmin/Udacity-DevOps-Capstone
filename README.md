@@ -26,7 +26,7 @@
     ```
 
 
-- **Setup Jenkins Server with Blue Ocean on AWS:** 
+- **Setup Jenkins Server:** 
 
     - Install java:
     ```
@@ -43,6 +43,11 @@
         $ sudo apt-get install python3-venv
         ```
 
+    - Install "Blue-Ocean-Aggregator" Plug-In.
+
+    - Install "Pipeline-AWS" Plug-In.
+
+    
     ![1-jenkins-blueocean.png](screenshots/1-jenkins-blueocean.png)
 
 
