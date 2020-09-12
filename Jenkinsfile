@@ -45,7 +45,9 @@ pipeline {
 
         stage('Green Deployment'){
             steps {
-                sh "kubectl apply -f k8s/green-deployment.yaml"
+                withAWS(credentials:'eks-admin'){
+                    sh "kubectl apply -f k8s/green-deployment.yaml"
+                }
             }
         }
 
