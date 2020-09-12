@@ -45,7 +45,7 @@ pipeline {
 
         stage('Set K8S Context'){
             steps {
-                withAWS(credentials:'eks-admin'){
+                withAWS(credentials:'aws-credentials'){
                     sh "kubectl config set-context arn:aws:eks:us-east-2:319947095944:cluster/production"
                 }
             }
@@ -53,7 +53,7 @@ pipeline {
 
         stage('Test kubectl'){
             steps {
-                withAWS(credentials:'eks-admin'){
+                withAWS(credentials:'aws-credentials'){
                     sh "kubectl get all"
                 }
             }
