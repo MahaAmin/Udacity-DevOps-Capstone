@@ -123,6 +123,8 @@
         ```
 
         ![kubectl-get-nodes.png](screenshots/kubectl-get-nodes.png)
+
+        ![node-groups-ec2s.png](screenshots/node-groups-ec2s.png)
         
 
         7. Test deploying flask-app on the production cluster outside pipeline:

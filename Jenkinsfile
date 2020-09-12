@@ -1,8 +1,9 @@
 pipeline {
     environment{
-        registry = "mahaamin97/flask-app"
+        preProductionRegistry = "mahaamin97/pre-production-flask-app"
         registryCredential = 'docker-hub' 
-        dockerImage = '' 
+        greenDockerImage = '' 
+        blueDockerImage = ''
     }
     agent any 
     stages {
@@ -18,40 +19,47 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Green Docker Image') {
             steps {
-                script{
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                }
+                greenDockerImage = docker.build preProductionRegistry + ":$BUILD_NUMBER"
             }
         }
 
-        stage('Upload image to docker-hub'){
+        stage('Upload Green Image to Docker-Hub'){
             steps{
-                script{
-                    docker.withRegistry('', registryCredential){
-                        dockerImage.push()
-                    }
+                docker.withRegistry('', registryCredential){
+                    greenDockerImage.push()
                 }
             }
         }
 
-        stage('Clean Up Images'){
+        stage('Clean Up Green Image'){
             steps { 
-                sh "docker rmi $registry:$BUILD_NUMBER" 
+                sh "docker rmi $preProductionRegistry:$BUILD_NUMBER" 
             }
         }
 
-
-        stage('Set Current kubectl Context'){
+        stage('Green Deployment'){
             steps {
                 echo "setting kubectl context"
             }
         }
 
-        stage('Blue-Green-Deployment'){
+        stage('Unit Tests on Green Deployment'){
             steps{
                 echo "deploying blue-green."
+            }
+        }
+
+        stage('Blue Deployment'){
+            steps{
+                echo "Blue deployment"
+            }
+        }
+
+        stage('Destroy Green Deployment'){
+            steps{
+                echo "Destroying green deployment"
             }
         }
     }
