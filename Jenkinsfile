@@ -45,7 +45,7 @@ pipeline {
 
         stage('Green Deployment'){
             steps {
-                sh "kubectl get all"
+                sh "aws configure list && kubectl get all"
             }
         }
 
