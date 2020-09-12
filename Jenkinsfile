@@ -45,7 +45,7 @@ pipeline {
 
         stage('Green Deployment'){
             steps {
-                sh "aws configure list && kubectl get all"
+                sh "whoami && aws configure list && kubectl get all"
             }
         }
 
