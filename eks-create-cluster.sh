@@ -1,1 +1,0 @@
-eksctl create cluster --name $1 --version 1.17 --region us-east-2 --fargate
