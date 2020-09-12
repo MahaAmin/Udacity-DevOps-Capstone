@@ -51,7 +51,7 @@ pipeline {
             }
         }
 
-        stage('Test kubectl"){
+        stage('Test kubectl'){
             steps {
                 sh "kubectl get all"
             }
