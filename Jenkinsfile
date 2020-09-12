@@ -45,7 +45,7 @@ pipeline {
 
         stage('Green Deployment'){
             steps {
-                sh "cat ~/.kube/config"
+                sh "kubectl get all"
             }
         }
 
