@@ -43,7 +43,7 @@
         $ sudo apt-get install python3-venv
         ```
 
-    ![1-jenkins-blueocean](screenshots/1-jenkins-blueocean.png)
+    ![1-jenkins-blueocean.png](screenshots/1-jenkins-blueocean.png)
 
 
 - **Docker With Jenkins:**
@@ -52,7 +52,7 @@
 
     - Add jenkins to docker group:
         ```
-            $ sudo usermod -aG docker jenkins
+        $ sudo usermod -aG docker jenkins
         ```
 
     - Install "Docker" jenkin's plug-in.
@@ -62,7 +62,14 @@
     - Use docker plug-in to build, upload, and delete docker images.
 
 
-- **Kubernetes Cluster on AWS using EKS:**
+- **EKS IAM Management:**
+    - Create **EKS-Admin** policy: Full access on EKS.
+    - Create **EKS-Admins** IAM group.
+    - Create **eks-admin** IAM user and add it to **EKS-Admins** IAM group.
+    - Download Access and Secret-Access keys.
+    - Create credentials for eks-admin on jenkins server.
+    
+- **Create Kubernetes "Production" Cluster on AWS using EKS: (Tools installed locally)**
 
     - Follow this [guide](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
 
@@ -70,8 +77,71 @@
     - Install eksctl.
     - Install kubectl.
     - Create Amazon EKS cluster:
+        1. Create an AWS IAM service role:
+
+        ![eks-service-iam-role.png](screenshots/eks-service-iam-role.png)
+
+        2. Create Network (VPC,Subnets,SecurityGroups,InternetGateway,RouteTables) to deploy the cluster using **CloudFormation/amazon-eks-vpc-sample.yaml**
+
+        ![eks-vpc.png](screenshots/eks-vpc.png)
+
+        ![vpc-for-eks-resources.png](screenshots/vpc-for-eks-resources.png)
+
+        3. Create AWS EKS Cluster:
+
+        ![eks-cluster-production.png](screenshots/eks-cluster-production.png)
+
+        4. Configure kubectl for Amazon EKS:
+
         ```
-            $ ./eks-create-cluster.sh udacity-cluster
+        $ aws eks --region us-east-2 update-kubeconfig --name production
         ```
-    
+
+        ```
+        kubectl config current-context
+        ```
+
+        ![kubectl-config-current-context.png](screenshots/kubectl-config-current-context.png)
+
+        5. Create worker nodes to join kubernetes cluster using **CloudFormation/amazon-eks-nodegroup.yaml**:
+
+        ![eks-groupnode-stack.png](screenshots/eks-groupnode-stack.png)
+
+        
+        ![eks-groupnode-resources.png](screenshots/eks-groupnode-resources.png)
+
+        6. Enable the worker nodes to join cluster using **k8s/aws-auth-cm.yaml**: 
+
+        ```
+        kubectl apply -f ~/.kube/aws-auth-cm.yaml
+        ```
+
+        check nodes :
+
+        ```
+        kubectl get nodes
+        ```
+
+        ![kubectl-get-nodes.png](screenshots/kubectl-get-nodes.png)
+        
+
+        7. Test deploying flask-app on the production cluster outside pipeline:
+
+        ```
+        kubectl apply -f k8s/blue-deployment.yaml 
+        ```
+
+        ```
+        kubectl apply -f k8s/service.yaml 
+        ```
+
+        ```
+        kubectl get all
+        ```
+
+        ![kubectl-get-all.png](screenshots/kubectl-get-all.png)
+
+        Access the app from browser:
+
+        ![app-in-browser.png](screenshots/app-in-browser.png)
     

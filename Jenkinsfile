@@ -42,6 +42,13 @@ pipeline {
             }
         }
 
+
+        stage('Set Current kubectl Context'){
+            steps {
+                echo "setting kubectl context"
+            }
+        }
+
         stage('Blue-Green-Deployment'){
             steps{
                 echo "deploying blue-green."
