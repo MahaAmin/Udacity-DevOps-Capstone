@@ -45,7 +45,9 @@ pipeline {
 
         stage('Green Deployment'){
             steps {
-                sh "whoami && aws configure list && kubectl get all"
+                withAWS(credentials:'eks-admin'){
+                    sh "whoami && aws configure list && kubectl get all"
+                }
             }
         }
 
