@@ -45,7 +45,7 @@ pipeline {
 
         stage('Green Deployment'){
             steps {
-                echo "setting kubectl context"
+                sh "kubectl apply -f k8s/green-deployment.yaml"
             }
         }
 

@@ -69,7 +69,7 @@
     - Download Access and Secret-Access keys.
     - Create credentials for eks-admin on jenkins server.
     
-- **Create Kubernetes "Production" Cluster on AWS using EKS: (Tools installed locally)**
+- **Create Kubernetes "Production" Cluster on AWS using EKS: (From my local machine)**
 
     - Follow this [guide](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
 
