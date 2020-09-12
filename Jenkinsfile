@@ -21,14 +21,18 @@ pipeline {
 
         stage('Build Green Docker Image') {
             steps {
-                greenDockerImage = docker.build preProductionRegistry + ":$BUILD_NUMBER"
+                script{
+                    greenDockerImage = docker.build preProductionRegistry + ":$BUILD_NUMBER"
+                }
             }
         }
 
         stage('Upload Green Image to Docker-Hub'){
             steps{
-                docker.withRegistry('', registryCredential){
-                    greenDockerImage.push()
+                script{
+                    docker.withRegistry('', registryCredential){
+                        greenDockerImage.push()
+                    }
                 }
             }
         }
