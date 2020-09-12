@@ -53,7 +53,9 @@ pipeline {
 
         stage('Test kubectl'){
             steps {
-                sh "kubectl get all"
+                withAWS(credentials:'eks-admin'){
+                    sh "kubectl get all"
+                }
             }
         }
 
