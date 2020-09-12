@@ -51,10 +51,10 @@ pipeline {
             }
         }
 
-        stage('Test kubectl'){
+        stage('Green Deployment'){
             steps {
                 withAWS(credentials:'aws-credentials'){
-                    sh "kubectl get all"
+                    sh "kubectl apply -f k8s/Green"
                 }
             }
         }
