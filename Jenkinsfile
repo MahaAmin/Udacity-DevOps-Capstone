@@ -22,7 +22,7 @@ pipeline {
         stage('Build Green Docker Image') {
             steps {
                 script{
-                    greenDockerImage = docker.build preProductionRegistry + ":$BUILD_NUMBER"
+                    greenDockerImage = docker.build preProductionRegistry
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
 
         stage('Clean Up Green Image'){
             steps { 
-                sh "docker rmi $preProductionRegistry:$BUILD_NUMBER" 
+                sh "docker rmi $preProductionRegistry" 
             }
         }
 
