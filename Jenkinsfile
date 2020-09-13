@@ -96,12 +96,6 @@ pipeline {
             }
         }
 
-        stage('Blue Deployment'){
-            steps{
-                echo "Blue deployment"
-            }
-        }
-
         stage('Destroy Green Deployment'){
             steps{
                 echo "Destroying green deployment"
