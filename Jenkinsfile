@@ -53,7 +53,7 @@ pipeline {
         stage('Green Deployment'){
             steps {
                 withAWS(credentials:'aws-credentials'){
-                    sh "kubectl apply -f k8s/Green"
+                    sh "kubectl apply -f k8s/Green/green-deployment.yaml && kubectl apply -f k8s/Green/test-service.yaml"
                 }
             }
         }
@@ -61,6 +61,14 @@ pipeline {
         stage('Test Green Deployment'){
             steps{
                 input "Deploy to production?"
+            }
+        }
+
+        Stage('Switch Traffic To Green Deployment){
+            steps{
+                withAWS(credentials:'aws-credentials'){
+                    sh "kubectl apply -f k8s/Green/green-service.yaml"
+                }
             }
         }
 
