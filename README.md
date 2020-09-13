@@ -195,6 +195,8 @@ Steps:
 
 2. Linting Code:
 
+![lint-failed.png](screenshots/lint-failed.png)
+
 
 
 
