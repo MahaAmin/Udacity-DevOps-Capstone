@@ -1,6 +1,5 @@
 pipeline {
     environment{
-        preProductionRegistry = "mahaamin97/pre-production-flask-app"
         registryCredential = 'docker-hub' 
         greenDockerImage = '' 
         blueDockerImage = ''
@@ -16,6 +15,14 @@ pipeline {
         stage('Lint Code'){
             steps {
                 sh "bash ./run_pylint.sh"
+            }
+        }
+
+        stage('Set K8S Context'){
+            steps {
+                withAWS(credentials:'aws-credentials'){
+                    sh "kubectl config set-context arn:aws:eks:us-east-2:319947095944:cluster/production"
+                }
             }
         }
 
@@ -39,29 +46,53 @@ pipeline {
 
         stage('Clean Up Green Image'){
             steps { 
-                sh "docker rmi $preProductionRegistry" 
-            }
-        }
-
-        stage('Set K8S Context'){
-            steps {
-                withAWS(credentials:'aws-credentials'){
-                    sh "kubectl config set-context arn:aws:eks:us-east-2:319947095944:cluster/production"
-                }
+                sh "docker rmi $greenDockerImage" 
             }
         }
 
         stage('Green Deployment'){
             steps {
                 withAWS(credentials:'aws-credentials'){
-                    sh "kubectl apply -f k8s/Green"
+                    sh "export DEPLOY_ENV=pre-production-flask-app && kubectl apply -f k8s/green-deployment.yaml && kubectl apply -f k8s/service.yaml"
                 }
             }
         }
 
-        stage('Unit Tests on Green Deployment'){
+        stage('Test Green Deployment'){
             steps{
-                echo "deploying blue-green."
+                echo "Making some tests."
+            }
+        }
+
+        stage('Build Blue Docker Image') {
+            steps {
+                script{
+                    blueDockerImage = docker.build "mahaamin97/flask-app"
+                }
+            }
+        }
+
+        stage('Upload Blue Image to Docker-Hub'){
+            steps{
+                script{
+                    docker.withRegistry('', registryCredential){
+                        blueDockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Clean Up Blue Image'){
+            steps { 
+                sh "docker rmi $blueDockerImage" 
+            }
+        }
+
+        stage('Blue Deployment'){
+            steps {
+                withAWS(credentials:'aws-credentials'){
+                    sh "export DEPLOY_ENV=flask-app && kubectl apply -f k8s/blue-deployment.yaml && kubectl apply -f k8s/service.yaml"
+                }
             }
         }
 
