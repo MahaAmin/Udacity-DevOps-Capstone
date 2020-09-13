@@ -22,7 +22,7 @@ pipeline {
         stage('Build Green Docker Image') {
             steps {
                 script{
-                    greenDockerImage = docker.build preProductionRegistry
+                    greenDockerImage = docker.build "mahaamin97/pre-production-flask-app"
                 }
             }
         }
