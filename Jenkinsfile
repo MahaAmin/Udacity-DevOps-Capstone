@@ -46,14 +46,14 @@ pipeline {
 
         stage('Clean Up Green Image'){
             steps { 
-                sh "docker images" 
+                sh "docker rmi mahaamin97/pre-production-flask-app" 
             }
         }
 
         stage('Green Deployment'){
             steps {
                 withAWS(credentials:'aws-credentials'){
-                    sh "export DEPLOY_ENV=pre-production-flask-app && kubectl apply -f k8s/green-deployment.yaml && kubectl apply -f k8s/service.yaml"
+                    sh "kubectl apply -f k8s/Green"
                 }
             }
         }
@@ -84,14 +84,14 @@ pipeline {
 
         stage('Clean Up Blue Image'){
             steps { 
-                sh "docker rmi $blueDockerImage" 
+                sh "docker rmi mahaamin97/flask-app" 
             }
         }
 
         stage('Blue Deployment'){
             steps {
                 withAWS(credentials:'aws-credentials'){
-                    sh "export DEPLOY_ENV=flask-app && kubectl apply -f k8s/blue-deployment.yaml && kubectl apply -f k8s/service.yaml"
+                    sh "kubectl apply -f k8s/Blue"
                 }
             }
         }
