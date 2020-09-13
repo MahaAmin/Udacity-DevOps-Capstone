@@ -46,7 +46,7 @@ pipeline {
 
         stage('Clean Up Green Image'){
             steps { 
-                sh "docker rmi mahaamin97/pre-production-flask-app:$BUILD_NUMBER" 
+                sh "docker rmi mahaamin97/pre-production-flask-app:latest" 
             }
         }
 
@@ -75,7 +75,7 @@ pipeline {
         stage('Build Blue Docker Image') {
             steps {
                 script{
-                    blueDockerImage = docker.build "mahaamin97/flask-app" + ":$BUILD_NUMBER"
+                    blueDockerImage = docker.build "mahaamin97/flask-app"
                 }
             }
         }
@@ -92,7 +92,7 @@ pipeline {
 
         stage('Clean Up Blue Image'){
             steps { 
-                sh "docker rmi mahaamin97/flask-app:$BUILD_NUMBER" 
+                sh "docker rmi mahaamin97/flask-app:latest" 
             }
         }
 
