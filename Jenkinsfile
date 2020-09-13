@@ -60,7 +60,7 @@ pipeline {
 
         stage('Test Green Deployment'){
             steps{
-                echo "Making some tests."
+                input "Deploy to production?"
             }
         }
 
