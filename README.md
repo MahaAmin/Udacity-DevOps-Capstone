@@ -212,6 +212,12 @@ Steps:
 
 6. Clean Up green image: delete pre-production-flask-app Image from jenkins server after uploading it to docker-hub, to save jenkin's server disk space.
 
-7. Green Deployment:
+7. Blue/Green Deployment Demonstration:
+
+    - Blue --> production deployment
+    - Green --> pre-production deployment
+    - If green deployment succeeded, changes are deployed to blue deployment (pipeline ends having two identical environments)
+
+    
 
 
