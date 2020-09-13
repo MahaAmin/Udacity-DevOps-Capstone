@@ -64,7 +64,7 @@ pipeline {
             }
         }
 
-        Stage('Switch Traffic To Green Deployment){
+        Stage('Switch Traffic To Green Deployment'){
             steps{
                 withAWS(credentials:'aws-credentials'){
                     sh "kubectl apply -f k8s/Green/green-service.yaml"
