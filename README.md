@@ -216,8 +216,20 @@ Steps:
 
     - Blue --> production deployment
     - Green --> pre-production deployment
+    - 
     - If green deployment succeeded, changes are deployed to blue deployment (pipeline ends having two identical environments)
 
-    
 
+    - Green deployment succeeded:
+
+    ![blue-deployment.png](screenshots/blue-deployment.png)
+
+    Green and Blue environments are the same (until new commit happens)
+
+    ![](screenshots/blue-green-both-blue.png)
+
+
+    - Green deployment failed:
+
+    
 
