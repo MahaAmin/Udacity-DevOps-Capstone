@@ -1,7 +1,7 @@
 """
 main module flask app
 """
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -10,4 +10,4 @@ def index():
     """
     main route
     """
-    return 'Hello, I am Maha Amin, and this is my capstone project.'
+    return render_template('green.html')

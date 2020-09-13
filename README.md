@@ -187,7 +187,7 @@ Create kubernetes "Production" Cluster on AWS using EKS: (From my local machine)
 
 Overview: 
 
-![](screenshots/Jenkins-Pipeline.png)
+![Jenkins-Pipeline.png](screenshots/Jenkins-Pipeline.png)
 
 Steps:
 
@@ -198,5 +198,20 @@ Steps:
 ![lint-failed.png](screenshots/lint-failed.png)
 
 
+![lint-success.png](screenshots/lint-success.png)
+
+3. Set K8S Context: To enable jenkins to run kubectl commands with "aws-user" credentials stored in jenkins server.
+
+4. Build Green Docker Image.
+
+5. Push green image (mahaamin97/pre-production-flask-app) to docker-hub registery:
+
+    - Link to [pre-production-flask-app Image](https://hub.docker.com/repository/docker/mahaamin97/pre-production-flask-app/general)
+
+![](screenshots/docker-hub.png)
+
+6. Clean Up green image: delete pre-production-flask-app Image from jenkins server after uploading it to docker-hub, to save jenkin's server disk space.
+
+7. Green Deployment:
 
 
