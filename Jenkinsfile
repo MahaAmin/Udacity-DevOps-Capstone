@@ -46,7 +46,7 @@ pipeline {
 
         stage('Clean Up Green Image'){
             steps { 
-                sh "docker rmi $greenDockerImage" 
+                sh "docker images && docker rmi $preProductionRegistry" 
             }
         }
 
