@@ -95,11 +95,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Destroy Green Deployment'){
-            steps{
-                echo "Destroying green deployment"
-            }
-        }
     }
 }

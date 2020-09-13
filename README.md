@@ -3,11 +3,18 @@
 
 ## Project Steps
 
-- **Development:**
+1. [Development](#development)
+2. [Jenkins](#jenkins)
+3. [Setup Kubernetes Cluster](#setup-kubernetes-cluster)
+4. [CI/CD Pipeline](#ci/cd-pipeline)
 
-    Simple flask application.
+<hr>
 
-<br>
+### Development
+
+ - Simple flask application.
+
+<hr>
 
 - **Docker Containerization (Local manual check):**
 
@@ -24,11 +31,28 @@
     ```
         $./upload_docker.sh
     ```
+<hr>
 
+### Jenkins
+
+- **Create security-group for jenkins:**
+
+![jenkins-sg.png](screenshots/jenkins-sg.png)
+
+- **Create jenkins EC2:**
+
+![jenkins-ec2.png](screenshots/jenkins-ec2.png)
+
+- **Connect to jenkins ec2:**
+
+```
+ssh -i udacity-capstone.pem ubuntu@ec2-18-220-188-146.us-east-2.compute.amazonaws.com
+```
 
 - **Setup Jenkins Server:** 
 
     - Install java:
+
     ```
     $ sudo apt update && sudo apt install default-jdk;
     ```
@@ -45,9 +69,6 @@
 
     - Install "Blue-Ocean-Aggregator" Plug-In.
 
-    - Install "Pipeline-AWS" Plug-In.
-
-    
     ![1-jenkins-blueocean.png](screenshots/1-jenkins-blueocean.png)
 
 
@@ -66,89 +87,114 @@
 
     - Use docker plug-in to build, upload, and delete docker images.
 
+![jenkins-credentials.png](screenshots/jenkins-credentials.png)
 
-- **EKS IAM Management:**
-    - Create **EKS-Admin** policy: Full access on EKS.
-    - Create **EKS-Admins** IAM group.
-    - Create **eks-admin** IAM user and add it to **EKS-Admins** IAM group.
-    - Download Access and Secret-Access keys.
-    - Create credentials for eks-admin on jenkins server.
+- **AWS With Jenkins:**
+
+    - Install "Pipeline-AWS" Plug-In.
+    - Add AWS-User credentials to jenkins.
     
-- **Create Kubernetes "Production" Cluster on AWS using EKS: (From my local machine)**
 
-    - Follow this [guide](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
+- **Kubernetes With Jenkins:**
 
-    - Install AWS CLI.
-    - Install eksctl.
     - Install kubectl.
-    - Create Amazon EKS cluster:
-        1. Create an AWS IAM service role:
 
-        ![eks-service-iam-role.png](screenshots/eks-service-iam-role.png)
+<hr>
 
-        2. Create Network (VPC,Subnets,SecurityGroups,InternetGateway,RouteTables) to deploy the cluster using **CloudFormation/amazon-eks-vpc-sample.yaml**
+### Setup Kubernetes Cluster
 
-        ![eks-vpc.png](screenshots/eks-vpc.png)
+Create kubernetes "Production" Cluster on AWS using EKS: (From my local machine)
 
-        ![vpc-for-eks-resources.png](screenshots/vpc-for-eks-resources.png)
+- Useful resource [here](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html) .
 
-        3. Create AWS EKS Cluster:
+- Install AWS CLI.
+- Install eksctl.
+- Install kubectl.
+- Create Amazon EKS cluster:
+    1. Create an AWS IAM service role:
 
-        ![eks-cluster-production.png](screenshots/eks-cluster-production.png)
+    ![eks-service-iam-role.png](screenshots/eks-service-iam-role.png)
 
-        4. Configure kubectl for Amazon EKS:
+    2. Create Network (VPC,Subnets,SecurityGroups,InternetGateway,RouteTables) to deploy the cluster using **CloudFormation/amazon-eks-vpc-sample.yaml**
 
-        ```
-        $ aws eks --region us-east-2 update-kubeconfig --name production
-        ```
+    ![eks-vpc.png](screenshots/eks-vpc.png)
 
-        ```
-        kubectl config current-context
-        ```
+    ![vpc-for-eks-resources.png](screenshots/vpc-for-eks-resources.png)
 
-        ![kubectl-config-current-context.png](screenshots/kubectl-config-current-context.png)
+    3. Create AWS EKS Cluster:
 
-        5. Create worker nodes to join kubernetes cluster using **CloudFormation/amazon-eks-nodegroup.yaml**:
+    ![eks-cluster-production.png](screenshots/eks-cluster-production.png)
 
-        ![eks-groupnode-stack.png](screenshots/eks-groupnode-stack.png)
+    4. Configure kubectl for Amazon EKS:
 
-        
-        ![eks-groupnode-resources.png](screenshots/eks-groupnode-resources.png)
+    ```
+    $ aws eks --region us-east-2 update-kubeconfig --name production
+    ```
 
-        6. Enable the worker nodes to join cluster using **k8s/aws-auth-cm.yaml**: 
+    ```
+    kubectl config current-context
+    ```
 
-        ```
-        kubectl apply -f ~/.kube/aws-auth-cm.yaml
-        ```
+    ![kubectl-config-current-context.png](screenshots/kubectl-config-current-context.png)
 
-        check nodes :
+    5. Create worker nodes to join kubernetes cluster using **CloudFormation/amazon-eks-nodegroup.yaml**:
 
-        ```
-        kubectl get nodes
-        ```
+    ![eks-groupnode-stack.png](screenshots/eks-groupnode-stack.png)
 
-        ![kubectl-get-nodes.png](screenshots/kubectl-get-nodes.png)
-
-        ![node-groups-ec2s.png](screenshots/node-groups-ec2s.png)
-        
-
-        7. Test deploying flask-app on the production cluster outside pipeline:
-
-        ```
-        kubectl apply -f k8s/blue-deployment.yaml 
-        ```
-
-        ```
-        kubectl apply -f k8s/service.yaml 
-        ```
-
-        ```
-        kubectl get all
-        ```
-
-        ![kubectl-get-all.png](screenshots/kubectl-get-all.png)
-
-        Access the app from browser:
-
-        ![app-in-browser.png](screenshots/app-in-browser.png)
     
+    ![eks-groupnode-resources.png](screenshots/eks-groupnode-resources.png)
+
+    6. Enable the worker nodes to join cluster using **k8s/aws-auth-cm.yaml**: 
+
+    ```
+    kubectl apply -f ~/.kube/aws-auth-cm.yaml
+    ```
+
+    check nodes :
+
+    ```
+    kubectl get nodes
+    ```
+
+    ![kubectl-get-nodes.png](screenshots/kubectl-get-nodes.png)
+
+    ![node-groups-ec2s.png](screenshots/node-groups-ec2s.png)
+    
+
+    7. Test deploying flask-app on the production cluster outside pipeline:
+
+    ```
+    kubectl apply -f k8s/blue-deployment.yaml 
+    ```
+
+    ```
+    kubectl apply -f k8s/service.yaml 
+    ```
+
+    ```
+    kubectl get all
+    ```
+
+    ![kubectl-get-all.png](screenshots/kubectl-get-all.png)
+
+    Access the app from browser:
+
+    ![app-in-browser.png](screenshots/app-in-browser.png)
+
+<hr>
+
+### CI/CD Pipeline
+
+Overview: 
+
+![](screenshots/Jenkins-Pipeline.png)
+
+Steps:
+
+1. Install needed packages from **requirements.txt**.
+
+2. Linting Code:
+
+
+
+
